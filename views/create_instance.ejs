@@ -1,0 +1,155 @@
+<html>
+<head>
+    <title> Server Instance Creation</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <style>
+
+
+        body {
+            background-color: #444;
+            background: url(http://s18.postimg.org/l7yq0ir3t/pick8_1.jpg);
+
+        }
+        .form-signin input[type="text"] {
+            margin-bottom: 5px;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+        .form-signin .form-control {
+            position: relative;
+            font-size: 16px;
+            font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+            height: auto;
+            padding: 10px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        .vertical-offset-100 {
+            padding-top: 70px;
+        }
+        .img-responsive {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: auto;
+        }
+        .panel {
+            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.75);
+            border: 1px solid transparent;
+            border-radius: 4px;
+            -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+            box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+        }
+
+    </style>
+</head>
+
+
+<body ng-app="myapp" ng-controller="myctrl">
+<div class="container">
+    <div class="row vertical-offset-100">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row-fluid user-row">
+                        <img src="http://s11.postimg.org/7kzgji28v/logo_sm_2_mr_1.png" class="img-responsive" alt="Conxole Admin"/>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form accept-charset="UTF-8" role="form" class="form-signin">
+                        <fieldset>
+                            <label class="panel-login">
+                                <div class="login_result"></div>
+                            </label>
+                            <label for="sel1">Instance Name:</label>
+                            <input class="form-control" placeholder="Instance Name" id="instance_name"  ng-model="instance_name" type="text">
+                            </br>
+                            <label for="sel1">Instance Type (select one):</label>
+                            <select class="form-control" id="instance_type" ng-model="instance_type" >
+                                <option>Ubuntu</option>
+                                <option>Cirros</option>
+                                <option>Windows</option>
+                            </select>
+                            </br>
+                            <label for="sel1">Number of Instances (select one):</label>
+                            <select class="form-control" id="no_of_instances" ng-model="instance_number">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </select>
+                            </br>
+                            <label> Security & Domain</label>
+                            <br>
+                            <label class="radio-inline">
+                                <input type="radio" value="1" name="optradio">Option 1
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" value="2" name="optradio">Option 2
+                            </label>
+
+                            <br></br>
+                            <input class="btn btn-lg btn-success btn-block" ng-click="create_instance()" type="submit" id="Submit" value="Submit »">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+<script>
+
+    var app=angular.module("myapp",[]);
+    app.controller("myctrl",function($scope,$http) {
+
+        $scope.create_instance = function () {
+            var instancename = $scope.instance_name;
+            var instance_type=$scope.instance_type;
+            var instancenumber= $scope.instance_number;
+            console.log("Instance Name:" + instancename);
+            console.log("instance type:"+instance_type);
+            console.log("Instance nummber:"+instancenumber);
+
+            $http({
+                method: 'post',
+                url: '/instance',
+                data: {
+                    'instance_name': instancename
+                }
+            }).success(function mysuccess(response) {
+                console.log(response);
+                if (response.statusCode == 200)
+                    window.alert("Success!!!");
+                else
+                    window.alert("Not Success!!!");
+
+            });
+        }
+    });
+
+
+
+
+</script>
+
+
+
+
+</html>
