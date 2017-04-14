@@ -42,11 +42,15 @@ exports.checksignin=function(req,res){
         else {
             console.log("the result is ");
             console.log(check_result);
+            console.log(check_result[0].user_id);
 
             if (check_result.length > 0) {
                 //
 
-                console.log("user already present");
+                console.log("user  present");
+                req.session.user_email=req.param("email_signin");
+                req.session.user_id=check_result[0].user_id;
+                console.log("user session"+req.session.user_id);
                 res.send({statusCode: 200});
 
 
