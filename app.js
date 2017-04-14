@@ -11,6 +11,7 @@ var signup = require('./routes/signup');
 var signin = require('./routes/signin');
 var reroute = require('./routes/rerouting');
 var instance_block = require('./routes/instances');
+var expresssession=require('express-session');
 
 var app = express();
 var http = require('http');
@@ -29,12 +30,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.session({ secret: 'cmpe295', cookie: { maxAge: 600000 }}))
+
+/*
 app.use(cookieSession({
     name: 'session',
     keys: ['CMPE295'],
     // Cookie Options 
     maxAge:2* 60 * 1000 //2 minutes
-}))
+}));
+*/
+
+app.use(expresssession({
+    cookieName: 'session',
+    secret: 'session_virtual_lab_295B',
+    duration: 1*60*1000,
+    activeDuration: 1*60*1000
+}));
 
 app.use('/', index);
 app.use('/users', users);
@@ -64,7 +75,7 @@ app.get('/create_instance',function(req,res){
 app.post('/instance',function(req,res){
     ses = req.session;
   console.log("inside /instance");
-    if(ses.user)
+    if(ses.user_id)
     {
         instance_block.createInstance(req,res);
     }
